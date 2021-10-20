@@ -68,28 +68,28 @@ print(paste(nrow(anno.mat)," genes annotated", sep=""))
   }
 
  print(paste(nrow(anno.mat)," genes after rm cell cycle genes", sep=""))
-  ### secondary filtering
-  ToRemov2 <- NULL
-  for(i in 8:ncol(anno.mat)){
-    cell <- cbind(anno.mat$chromosome_name, anno.mat[,i])
-    cell <- cell[cell[,2]!=0,]
-    if(length(as.numeric(cell))< 5){
-      rm <- colnames(anno.mat)[i]
-      ToRemov2 <- c(ToRemov2, rm)
-    } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
-      rm <- colnames(anno.mat)[i]
-      ToRemov2 <- c(ToRemov2, rm)
-    }
-    i<- i+1
-  }
+#   ### secondary filtering
+#   ToRemov2 <- NULL
+#   for(i in 8:ncol(anno.mat)){
+#     cell <- cbind(anno.mat$chromosome_name, anno.mat[,i])
+#     cell <- cell[cell[,2]!=0,]
+#     if(length(as.numeric(cell))< 5){
+#       rm <- colnames(anno.mat)[i]
+#       ToRemov2 <- c(ToRemov2, rm)
+#     } else if(length(rle(cell[,1])$length)<23|min(rle(cell[,1])$length)< ngene.chr){
+#       rm <- colnames(anno.mat)[i]
+#       ToRemov2 <- c(ToRemov2, rm)
+#     }
+#     i<- i+1
+#   }
 
-  if(length(ToRemov2)==(ncol(anno.mat)-7)) stop("all cells are filtered")
+#   if(length(ToRemov2)==(ncol(anno.mat)-7)) stop("all cells are filtered")
 
-  if(length(ToRemov2)>0){
-    anno.mat <-anno.mat[, -which(colnames(anno.mat) %in% ToRemov2)]
-  }
+#   if(length(ToRemov2)>0){
+#     anno.mat <-anno.mat[, -which(colnames(anno.mat) %in% ToRemov2)]
+#   }
 
- print(paste("filtered out ", length(ToRemov2), " cells with less than ",ngene.chr, " genes per chr", sep=""))
+#  print(paste("filtered out ", length(ToRemov2), " cells with less than ",ngene.chr, " genes per chr", sep=""))
   rawmat3 <- data.matrix(anno.mat[, 8:ncol(anno.mat)])
   norm.mat<- log(sqrt(rawmat3)+sqrt(rawmat3+1))
   norm.mat<- apply(norm.mat,2,function(x)(x <- x-mean(x)))
